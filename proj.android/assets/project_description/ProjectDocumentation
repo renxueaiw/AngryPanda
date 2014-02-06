@@ -1,0 +1,109 @@
+更新时间：2013年11月27日
+
+以下是对Angry Panda项目的简要说明：
+
+项目开发环境：
+
+Cocos2d Version: Cocos2d-x-2.1.5 （几乎未使用OpenGL eS，故兼容 v1.X)
+ios version: 6.1
+开发工具: Xcode 4.6
+
+本项目以Angry Birds(愤怒的小鸟)经典为蓝本，模仿其中游戏的交互机制，部分源码参考了Ray Wenderlich,GustavoAmbrozio Justin, Cocos2D社区等相关开发教程中的代码，并参考了GitHut开源代码及其它网络教程。
+
+参考教程及代码包括：
+http://www.raywenderlich.com/4756/how-to-make-a-catapult-shooting-game-with-cocos2d-and-box2d-part-1
+http://www.raywenderlich.com/4787/how-to-make-a-catapult-shooting-game-with-cocos2d-and-box2d-part-2
+http://www.binpress.com/browse?q=gamedev&u=139&utm_source=RayWenderlich&utm_medium=banner125&utm_campaign=gamedev-zelda-complete
+
+以下是项目中的主要类及其作用说明：
+1. 友盟统计工具和推送(新版本和定时推送功能)
+包含MobClick.h和libMobClickLibrary.a
+相关代码参考友盟官方文档：http://dev.umeng.com/doc/document_ana_ios.html
+
+2. 游戏辅助类
+1)Cocos2D扩展-CCScrollLayer
+用于产生滚动标签的效果
+
+2)Google XML文件解析-GDataXMLNode
+用于解析XML文件(关卡数据)
+
+3)游戏场景切换-SceneManager
+用于统一管理各场景间的切换
+
+4)游戏音效管理
+用于统一管理游戏中的音效，目前还尚待完善
+
+3.游戏数据
+1)场景数据(Chapters.xml,ChaterParser,Chapter,Chapters)
+用于选择关卡场景
+
+2)关卡数据(Levels-Chapter1.xml,...,Level,LevelParser,Levels)
+用于选择大场景中的小关卡
+
+3)游戏常量-Constants.h
+保存游戏中的常量
+
+4)游戏状态和数据-GameData
+用于持久化保存玩家的游戏状态和数据
+其中使用CCUserDefaults来保存玩家的数据
+
+4.主要游戏场景
+1)资源加载界面(LoadingSceen)
+用于资源预加载
+
+2)游戏开始界面(StartGameScene)
+游戏启动后的首界面，其作用很简单，当用户触碰Play按钮后即可进入关卡选择界面
+
+3)关于界面(About)
+游戏和开发团队的相关信息
+
+4)场景选择界面
+用于选择大的游戏场景
+
+5)关卡选择界面(LevelSelect)
+用于选择某个场景中的具体关卡
+
+6)游戏主场景(MainScene)
+玩家交互的主要场景
+
+7)游戏暂停界面(GamePause)
+游戏暂停时所显示的界面
+
+8)关卡结束界面(LevelResult)
+关卡结束时显示游戏的结果
+使用该界面显示当前关卡是否通过，关卡得分，历史最高得分等信息，并可以进入下一关或返回关卡选择界面
+
+5.游戏逻辑
+1)碰撞检测机制(ContactListener)
+用于检测Box2D世界发生的物体碰撞
+
+6.逻辑中的视觉元素 (物体)
+1)定制动画(CustomAnimation)
+可定制的动画，目前尚待完善
+
+2)抽象物体类(PhysicsNode)
+该类直接继承自CCNode类，是CCNode类和b2Body类的拓展，其中的实例方法分别用于使用精灵帧来创建物体，删除物体，删除精灵，淡出并消失，让物体成为静态，删除精灵和物体。
+
+3)地平面物体(GroundPlane)
+旋转在主场景中的地平面物体
+
+4)发射平台(FirePlatform)
+该类用于创建抛投熊猫所使用平台物体
+
+5)游戏中的敌对角色(Enemy)
+顾名思议，该类将用于创建和管理游戏中的敌人角色
+该类将在ShootingTargets类中创建，它继承自PhysicsNode,其中定义的几个实例方法作用分别是在Box2D世界中初始化并创建敌人，让敌人受到伤害，让敌人分解，以及令其不会产生得分(防止在同一物体上两次得分)
+
+6)游戏中玩家可操控的角色熊猫 (Panda)
+该类将用于创建和管理游戏中的熊猫角色(玩家可控制角色)
+该类将在MainScene类中创建，它继承自PhysicsNode其中所定义的几个实例方法分别用于在Box2D中初始化并创建熊猫，创建熊猫
+
+7)游戏中的障碍物(StackObject)
+该类将用于创建及并管理游戏中的遮挡物
+该类将在ShootingTargets类中创建，它继承自PysicsNode,其中所定义的几个实例方法分别是在Box2D世界中初始化并创建遮挡物，创建物体，启动分解动画，当与地面接触时播放分解动画，当与熊猫接触时播放分解动画，以及令其不会产生得分(防止在同一物体上两次得分)
+
+8)游戏中的待攻击目标(ShootingTargets)
+该类将用于在各关卡场景中创建遮挡物和敌人。
+游戏中的遮挡物和敌人都将使用该类创建
+
+7.其它类
